@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package MeuQoelhoMQProto;
+
+enum QueueType {
+  SIMPLE = 0;
+  MULTIPLE = 1;
+}
+
+service BrokerService {
+  rpc CreateQueue (CreateQueueRequest) returns (QueueReply);
+  rpc DeleteQueue (DeleteQueueRequest) returns (QueueReply);
+  rpc GetQueues (Empty) returns (QueueListReply);
+
+  rpc PublishMessage (PublishMessageRequest) returns (MessageReply);
+  rpc PublishMessages (PublishMessagesRequest) returns (MessagesReply);
+
+  rpc GetMessage (GetMessageRequest) returns (GetMessageReply);
+  rpc SubscribeQueue(SubscribeRequest) returns (stream GetMessageReply);
+}
+
+message Empty { }
+
+message CreateQueueRequest {
+  string name = 1;
+  QueueType type = 2;
+}
+
+message DeleteQueueRequest {
+  string name = 1;
+}
+
+message QueueReply {
+  bool success = 1;
+  string message = 2;
+  optional string idQueue = 3;
+}
+
+message QueueSummary {
+  string idQueue = 1;
+  QueueType type = 2;
+  string name = 3;
+  int32 messagesCount = 4;
+}
+
+message QueueListReply {
+  bool success = 1;
+  repeated QueueSummary queues = 2;
+}
+
+message PublishMessageRequest {
+  string queueName = 1;
+  optional string messageString = 2;
+  optional bytes messageBytes = 3;
+}
+
+message PublishMessagesRequest {
+  repeated PublishMessageRequest messages = 1;
+}
+
+message MessageReply {
+  bool success = 1;
+  string message = 2;
+  optional string idMessage = 3;
+}
+
+message MessagesReply {
+  bool success = 1;
+  repeated MessageReply messagesResponse = 2;
+}
+
+message GetMessageRequest {
+  string queueName = 1;
+}
+
+message MessageContent {
+  string idMessage = 1;
+  string queueName = 2;
+  optional string messageString = 3;
+  optional bytes messageBytes = 4;
+}
+
+message GetMessageReply {
+  bool success = 1;
+  string responseMessage = 2;
+  optional MessageContent message = 3;
+}
+
+message SubscribeRequest {
+  string queueName = 1;
+}
