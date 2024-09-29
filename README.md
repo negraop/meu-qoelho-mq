@@ -7,6 +7,6 @@
 ![gRPC](https://img.shields.io/badge/gRPC-519FA9?style=for-the-badge)
 
 
-<br />
+<br /> 
 
 Implementação de um serviço de mensageria, como RabbitMQ, Kafka e afins, utilizando gRPC. Este projeto contém dois clientes que interagem com o serviço de mensageria, um foi criado em .NET e outro em Python.
